@@ -1,0 +1,2655 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "2.7.0-SNAPSHOT",
+    "title" : "REFAD: services métiers du référentiel des adresses"
+  },
+  "tags" : [ {
+    "name" : "api"
+  }, {
+    "name" : "apiaddress"
+  }, {
+    "name" : "apihisto"
+  }, {
+    "name" : "apirefdata"
+  }, {
+    "name" : "apisecurity"
+  }, {
+    "name" : "refad-ws"
+  } ],
+  "schemes" : [ "http", "https" ],
+  "paths" : {
+    "/api/address/pm-doubles" : {
+      "get" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.1.0",
+        "description" : "Recherche de PMs doublons par critères",
+        "operationId" : "listDoubles",
+        "parameters" : [ {
+          "name" : "withDeletedPm",
+          "in" : "query",
+          "description" : "Recherche parmi les PM historiques ?",
+          "required" : false,
+          "type" : "boolean",
+          "default" : false
+        }, {
+          "name" : "withInactivatedPm",
+          "in" : "query",
+          "description" : "Recherche parmi les PM inactivées",
+          "required" : false,
+          "type" : "boolean",
+          "default" : false
+        }, {
+          "name" : "organisationId",
+          "in" : "query",
+          "description" : "l'identifiant technique de l'organisation",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "swissZipcode",
+          "in" : "query",
+          "description" : "code postal suisse de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "swissZipcodeAddOn",
+          "in" : "query",
+          "description" : "complément de code postal suisse de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "foreignZipcode",
+          "in" : "query",
+          "description" : "code postal étranger de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "town",
+          "in" : "query",
+          "description" : "La ville",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Nom de l'organisation de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "nameAddOn",
+          "in" : "query",
+          "description" : "nameAddOn de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "query",
+          "description" : "pays de recherche",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PmSearchResultDto"
+              }
+            }
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      }
+    },
+    "/api/address/pms" : {
+      "get" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.2.0",
+        "description" : "Recherche de PMs par critères",
+        "operationId" : "list",
+        "parameters" : [ {
+          "name" : "criteria",
+          "in" : "query",
+          "description" : "critères génériques de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "withDeletedPm",
+          "in" : "query",
+          "description" : "Recherche parmi les PM historiques ?",
+          "required" : false,
+          "type" : "boolean",
+          "default" : false
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Type de la PM recherchée",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Identifiant métier (no caisse pour les type C) de la PM recherchée",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "town",
+          "in" : "query",
+          "description" : "Ville de la PM recherchée",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "nom de la PM recherchée",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "zipCode",
+          "in" : "query",
+          "description" : "code postal de recherche",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "country",
+          "in" : "query",
+          "description" : "ID du pays recherché",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "fybadSyncStatus",
+          "in" : "query",
+          "description" : "Status de la synchro FYBAD",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PmDto"
+              }
+            }
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.2.0",
+        "description" : "création d'une personne morale",
+        "operationId" : "create",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PmDto"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "201" : {
+            "description" : "Personne morale créée",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "400" : {
+            "description" : "La personne morale est incorrecte"
+          },
+          "409" : {
+            "description" : "La personne morale existe déjà"
+          },
+          "422" : {
+            "description" : "La personne morale est incorrecte"
+          }
+        }
+      }
+    },
+    "/api/address/pms/{dissolvedId}/dissolve" : {
+      "patch" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.1.0",
+        "description" : "dissolution de {dissolvedId}, reprise par {newOfficeId}",
+        "operationId" : "dissolve",
+        "parameters" : [ {
+          "name" : "dissolvedId",
+          "in" : "path",
+          "description" : "ID de la PM à dissoudre",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "newOfficeId",
+          "description" : "Caisse qui reprend la caisse dissoute",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "404" : {
+            "description" : "Personne morale non trouvée"
+          },
+          "417" : {
+            "description" : "Expectation Failed"
+          },
+          "422" : {
+            "description" : "Objet passé invalide"
+          },
+          "500" : {
+            "description" : "dissolution impossible"
+          }
+        }
+      }
+    },
+    "/api/address/pms/{id}" : {
+      "get" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.2.0",
+        "description" : "Résolution d'une personne morale via son id",
+        "operationId" : "get",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID de la PM recherchée",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "404" : {
+            "description" : "Personne morale non trouvée"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.2.0",
+        "description" : "Mise à jour d'une personne morale via son id",
+        "operationId" : "update",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID de la PM à mettre à jour",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PmDto"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "404" : {
+            "description" : "Personne morale non trouvée"
+          },
+          "422" : {
+            "description" : "Objet passé invalide"
+          }
+        }
+      }
+    },
+    "/api/address/pms/{id}/resyncfybad" : {
+      "patch" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.2.0",
+        "description" : "Re-synchronise la PM qui correspond à l'id avec FYBAD",
+        "operationId" : "resynchronizeFybad",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID de la PM à re-synchroniser avec FYBAD",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "404" : {
+            "description" : "Personne morale non trouvée"
+          },
+          "422" : {
+            "description" : "Objet passé invalide"
+          }
+        }
+      }
+    },
+    "/api/address/pms/{pmId}" : {
+      "delete" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.2.0",
+        "description" : "Désactive la la PM {pmId} ",
+        "operationId" : "deactivate",
+        "parameters" : [ {
+          "name" : "pmId",
+          "in" : "path",
+          "description" : "ID de la PM à désactiver-",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès, Personne morale supprimée",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "404" : {
+            "description" : "Personne morale non trouvée"
+          },
+          "500" : {
+            "description" : "Erreur système"
+          }
+        }
+      }
+    },
+    "/api/address/pms/{pmId}/reactivate" : {
+      "patch" : {
+        "tags" : [ "apiaddress" ],
+        "summary" : "0.1.0",
+        "description" : "Réactive la PM {pmId} supprimée",
+        "operationId" : "reactivate",
+        "parameters" : [ {
+          "name" : "pmId",
+          "in" : "path",
+          "description" : "ID de la PM à dissoudre",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          },
+          "404" : {
+            "description" : "Personne morale non trouvée"
+          },
+          "417" : {
+            "description" : "Expectation Failed"
+          },
+          "422" : {
+            "description" : "Id passé invalide"
+          },
+          "500" : {
+            "description" : "réactivation impossible"
+          }
+        }
+      }
+    },
+    "/api/admin/countries" : {
+      "post" : {
+        "summary" : "0.1.0",
+        "description" : "mise à jour de la table des paramètres par pays",
+        "operationId" : "updateCountryParameters",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/CountryParametersDto"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "mise à jour effectuée",
+            "schema" : {
+              "type" : "boolean"
+            }
+          },
+          "422" : {
+            "description" : "des données incorrectes ont été trouvées"
+          }
+        }
+      }
+    },
+    "/api/admin/env" : {
+      "get" : {
+        "summary" : "0.2.0",
+        "description" : "récupération de l'environnement technique du backend",
+        "operationId" : "getEnvironmentInfo",
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/EnvironmentDto"
+              }
+            }
+          },
+          "500" : {
+            "description" : "Erreur interne empêchant la récupération del 'environnement backend"
+          }
+        }
+      }
+    },
+    "/api/bic/{bic}" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "0.2.0",
+        "description" : "Validation d'un code bic",
+        "operationId" : "getBic",
+        "parameters" : [ {
+          "name" : "bic",
+          "in" : "path",
+          "description" : "code bic à valider",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "301" : {
+            "description" : "Le modèle de l'API REST de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "302" : {
+            "description" : "L'URL de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "303" : {
+            "description" : "L'URI de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "307" : {
+            "description" : "L'URI de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "400" : {
+            "description" : "La requête adressée à l'IbanTool est incorrecte"
+          },
+          "401" : {
+            "description" : "L'accès à l'IbanTool n'est pas autorisé"
+          },
+          "403" : {
+            "description" : "L'accès à l'IbanTool est interdit"
+          },
+          "404" : {
+            "description" : "La requête adressée à l'IbanTool n'existe pas"
+          },
+          "405" : {
+            "description" : "La requête adressée à l'IbanTool n'est pas autorisée"
+          },
+          "406" : {
+            "description" : "La requête adressée à l'IbanTool n'est pas acceptable"
+          },
+          "412" : {
+            "description" : "La requête adressée à l'IbanTool contient des conditions erronées"
+          },
+          "415" : {
+            "description" : "La requête adressée à l'IbanTool demande un format de données non supporté"
+          },
+          "500" : {
+            "description" : "Le serveur de l'IbanTool est en erreur"
+          },
+          "501" : {
+            "description" : "La requête adressée à l'IbanTool n'est pas implémentée"
+          }
+        }
+      }
+    },
+    "/api/format/fybad" : {
+      "post" : {
+        "summary" : "0.1.0",
+        "description" : "Formatage de la PM pour resynchroniser FYBAD",
+        "operationId" : "formatPmToFybad",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PmDto"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "adresse retournée formatée",
+            "schema" : {
+              "$ref" : "#/definitions/FormattedPostalAddressResultDto"
+            }
+          },
+          "400" : {
+            "description" : "La personne morale est incorrecte"
+          },
+          "422" : {
+            "description" : "La personne morale est incorrecte"
+          }
+        }
+      }
+    },
+    "/api/format/pm" : {
+      "post" : {
+        "summary" : "0.2.0",
+        "description" : "Formatage de l'adresse postale d'une PM",
+        "operationId" : "formatPmPostalAddress",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PmDto"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "adresse retournée formatée",
+            "schema" : {
+              "$ref" : "#/definitions/FormattedPostalAddressResultDto"
+            }
+          },
+          "400" : {
+            "description" : "La personne morale est incorrecte"
+          },
+          "422" : {
+            "description" : "La personne morale est incorrecte"
+          }
+        }
+      }
+    },
+    "/api/format/pms" : {
+      "post" : {
+        "summary" : "0.2.0",
+        "description" : "Formatage de l'adresse postale de plusieurs PM",
+        "operationId" : "formatPmPostalAddresses",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/definitions/PmDto"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "adresse retournée formatée",
+            "schema" : {
+              "$ref" : "#/definitions/FormattedPostalAddressResultDto"
+            }
+          },
+          "400" : {
+            "description" : "La personne morale est incorrecte"
+          },
+          "422" : {
+            "description" : "La personne morale est incorrecte"
+          }
+        }
+      }
+    },
+    "/api/format/service" : {
+      "post" : {
+        "summary" : "0.1.0",
+        "description" : "Formatage de l'adresse postale d'un service d'une PM",
+        "operationId" : "formatServicePostalAddress",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/PmDto"
+          }
+        }, {
+          "name" : "params",
+          "in" : "query",
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "adresse retournée formatée",
+            "schema" : {
+              "$ref" : "#/definitions/FormattedPostalAddressResultDto"
+            }
+          },
+          "400" : {
+            "description" : "La personne morale est incorrecte"
+          },
+          "422" : {
+            "description" : "La personne morale est incorrecte"
+          }
+        }
+      }
+    },
+    "/api/histo/orga/{id}" : {
+      "get" : {
+        "tags" : [ "apihisto" ],
+        "summary" : "1.0.0",
+        "description" : "recherche de l'historique d'une PM via son ID",
+        "operationId" : "getPmOrgasHistory",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID de la PMOrga recherchée",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PmOrgaHistoDto"
+              }
+            }
+          },
+          "404" : {
+            "description" : "Organisation non trouvée"
+          }
+        }
+      }
+    },
+    "/api/histo/paymentAddresses/{id}" : {
+      "get" : {
+        "tags" : [ "apihisto" ],
+        "summary" : "1.0.0",
+        "description" : "recherche de l'historique d'une adresse de paiement",
+        "operationId" : "getPaymentAddressesHistory",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID de l'adresse de paiement recherchée",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PaymentAddressHistoDto"
+              }
+            }
+          },
+          "404" : {
+            "description" : "Adrese de paiement non trouvée"
+          }
+        }
+      }
+    },
+    "/api/histo/pmServices/{id}" : {
+      "get" : {
+        "tags" : [ "apihisto" ],
+        "summary" : "1.0.0",
+        "description" : "recherche de l'historique d'un service d'une PM via son ID",
+        "operationId" : "getPmServicesHistory",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID du service recherché",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PmServiceHistoDto"
+              }
+            }
+          },
+          "404" : {
+            "description" : "Service non trouvé"
+          }
+        }
+      }
+    },
+    "/api/histo/postalAddresses/{id}" : {
+      "get" : {
+        "tags" : [ "apihisto" ],
+        "summary" : "1.0.0",
+        "description" : "recherche de l'historique d'une adresse postale",
+        "operationId" : "getPostalAddressesHistory",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID de l'adresse postale recherchée",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PostalAddressHistoDto"
+              }
+            }
+          },
+          "404" : {
+            "description" : "Adrese postale non trouvée"
+          }
+        }
+      }
+    },
+    "/api/iban/{iban}" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "summary" : "0.2.0",
+        "description" : "Validation d'un iban",
+        "operationId" : "getIban",
+        "parameters" : [ {
+          "name" : "iban",
+          "in" : "path",
+          "description" : "iban à valider",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "301" : {
+            "description" : "Le modèle de l'API REST de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "302" : {
+            "description" : "L'URL de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "303" : {
+            "description" : "L'URI de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "307" : {
+            "description" : "L'URI de l'IbanTool a changé",
+            "schema" : {
+              "$ref" : "#/definitions/IbanToolResponseDto"
+            }
+          },
+          "400" : {
+            "description" : "La requête adressée à l'IbanTool est incorrecte"
+          },
+          "401" : {
+            "description" : "L'accès à l'IbanTool n'est pas autorisé"
+          },
+          "403" : {
+            "description" : "L'accès à l'IbanTool est interdit"
+          },
+          "404" : {
+            "description" : "La requête adressée à l'IbanTool n'existe pas"
+          },
+          "405" : {
+            "description" : "La requête adressée à l'IbanTool n'est pas autorisée"
+          },
+          "406" : {
+            "description" : "La requête adressée à l'IbanTool n'est pas acceptable"
+          },
+          "412" : {
+            "description" : "La requête adressée à l'IbanTool contient des conditions erronées"
+          },
+          "415" : {
+            "description" : "La requête adressée à l'IbanTool demande un format de données non supporté"
+          },
+          "500" : {
+            "description" : "Le serveur de l'IbanTool est en erreur"
+          },
+          "501" : {
+            "description" : "La requête adressée à l'IbanTool n'est pas implémentée"
+          }
+        }
+      }
+    },
+    "/api/refdata/bankinfo" : {
+      "get" : {
+        "tags" : [ "apirefdata" ],
+        "summary" : "0.1.0",
+        "description" : "Chargement des informations bancaires d'un pays",
+        "operationId" : "bankInfo",
+        "parameters" : [ {
+          "name" : "iso2Code",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/BankingRulesDto"
+              }
+            }
+          },
+          "404" : {
+            "description" : "Pays non trouvé"
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      }
+    },
+    "/api/refdata/countries" : {
+      "get" : {
+        "tags" : [ "apirefdata" ],
+        "summary" : "0.2.0",
+        "description" : "Chargement de la liste des pays et infos de paiement",
+        "operationId" : "countries",
+        "parameters" : [ {
+          "name" : "criteria",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/CountryTerritoryDto"
+              }
+            }
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      }
+    },
+    "/api/refdata/towns" : {
+      "get" : {
+        "tags" : [ "apirefdata" ],
+        "summary" : "0.1.0",
+        "description" : "Chargement de la liste des Villes/communes",
+        "operationId" : "towns",
+        "parameters" : [ {
+          "name" : "criteria",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "countryCodeA2",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ZipCodeDto"
+              }
+            }
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      }
+    },
+    "/api/refdata/types" : {
+      "get" : {
+        "tags" : [ "apirefdata" ],
+        "summary" : "0.1.0",
+        "description" : "Chargement de la liste des types de personnes morales",
+        "operationId" : "types",
+        "parameters" : [ {
+          "name" : "criteria",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/PmTypeDto"
+              }
+            }
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      }
+    },
+    "/api/refdata/types/{id}" : {
+      "get" : {
+        "tags" : [ "apirefdata" ],
+        "summary" : "0.2.0",
+        "description" : "Retourne un type selon son id",
+        "operationId" : "getType",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID du type recherché",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "$ref" : "#/definitions/PmTypeDto"
+            }
+          },
+          "404" : {
+            "description" : "Type non trouvé"
+          }
+        }
+      }
+    },
+    "/api/refdata/zipCodes" : {
+      "get" : {
+        "tags" : [ "apirefdata" ],
+        "summary" : "1.0.0",
+        "description" : "Chargement de la liste des objets ZipCodeDto (données de la ville) à partir du début du zipCode ou du début du nom de la ville.",
+        "operationId" : "zipCodes",
+        "parameters" : [ {
+          "name" : "criteria",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "countryCodeA2",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ZipCodeDto"
+              }
+            }
+          },
+          "422" : {
+            "description" : "Critère de sélection invalide"
+          }
+        }
+      }
+    },
+    "/api/security/forbidden" : {
+      "get" : {
+        "tags" : [ "apisecurity" ],
+        "summary" : "0.1.0",
+        "description" : "service interdit (utile pour simuler la gestion du http-401 / 403 en prod avec l'eIAM)",
+        "operationId" : "getError403",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "403" : {
+            "description" : "interdit !"
+          }
+        }
+      }
+    },
+    "/api/security/permissions" : {
+      "get" : {
+        "tags" : [ "apisecurity" ],
+        "summary" : "0.1.0",
+        "description" : "Retourne la liste des permissions connues du serveur",
+        "operationId" : "getAllKnownPermissions",
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "array",
+                "uniqueItems" : true,
+                "items" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/security/userProperties" : {
+      "get" : {
+        "tags" : [ "apisecurity" ],
+        "summary" : "0.2.0",
+        "description" : "Retourne les informations sur l'utilisateur connecté",
+        "operationId" : "getUserProperties",
+        "responses" : {
+          "200" : {
+            "description" : "Succès",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/UserDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refad-ws/pms" : {
+      "get" : {
+        "tags" : [ "refad-ws" ],
+        "operationId" : "searchPMs",
+        "parameters" : [ {
+          "name" : "search",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "object"
+            }
+          }
+        }
+      }
+    },
+    "/refad-ws/pms/types/type/{codeType}" : {
+      "get" : {
+        "tags" : [ "refad-ws" ],
+        "operationId" : "getPm",
+        "parameters" : [ {
+          "name" : "codeType",
+          "in" : "path",
+          "description" : "Le code du type de personne morale.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "adrId",
+          "in" : "query",
+          "description" : "L'adrId de la personne morale (i.e. C : caisse...).",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "iso2Code",
+          "in" : "query",
+          "description" : "Le code iso du pays.",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "cdcCode",
+          "in" : "query",
+          "description" : "Le code CdC du pays.",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : ""
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "AddressInformationTypeDto" : {
+      "type" : "object",
+      "properties" : {
+        "addressLine1" : {
+          "type" : "string"
+        },
+        "addressLine2" : {
+          "type" : "string"
+        },
+        "street" : {
+          "type" : "string"
+        },
+        "houseNumber" : {
+          "type" : "string"
+        },
+        "dwellingNumber" : {
+          "type" : "string"
+        },
+        "postOfficeBoxNumber" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "postOfficeBoxText" : {
+          "type" : "string"
+        },
+        "locality" : {
+          "type" : "string"
+        },
+        "town" : {
+          "type" : "string"
+        },
+        "swissZipCode" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "swissZipCodeAddOn" : {
+          "type" : "string"
+        },
+        "swissZipCodeId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "foreignZipCode" : {
+          "type" : "string"
+        },
+        "country" : {
+          "$ref" : "#/definitions/CountryTypeDto"
+        }
+      }
+    },
+    "BankInfoDto" : {
+      "type" : "object",
+      "properties" : {
+        "bankName" : {
+          "type" : "string"
+        },
+        "bankAddress" : {
+          "type" : "string"
+        },
+        "bankZipCity" : {
+          "type" : "string"
+        },
+        "bankBic" : {
+          "type" : "string"
+        },
+        "bankClearingNr" : {
+          "type" : "string"
+        },
+        "bankPostAccount" : {
+          "type" : "string"
+        },
+        "zipCode" : {
+          "type" : "string"
+        },
+        "town" : {
+          "type" : "string"
+        },
+        "iso2Code" : {
+          "type" : "string"
+        }
+      },
+      "description" : "Information banque au format postfinance"
+    },
+    "BankingRulesDto" : {
+      "type" : "object",
+      "properties" : {
+        "iso2Code" : {
+          "type" : "string"
+        },
+        "ibanLength" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "checkAllowed" : {
+          "type" : "boolean"
+        },
+        "ibanPossible" : {
+          "type" : "boolean"
+        },
+        "ibanMandatory" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "CountryParametersDto" : {
+      "type" : "object",
+      "properties" : {
+        "iso2Code" : {
+          "type" : "string",
+          "description" : "Code Iso2 du pays"
+        },
+        "cdcCode" : {
+          "type" : "string",
+          "description" : "Code Cdc du pays"
+        },
+        "entryValid" : {
+          "type" : "boolean",
+          "description" : "est-ce que le pays est valide dans nos données"
+        },
+        "zipcodeMandatory" : {
+          "type" : "boolean",
+          "description" : "Code Iso2 du pays"
+        },
+        "homePayAllowed" : {
+          "type" : "boolean",
+          "description" : "Paiements chèques autorisés"
+        },
+        "bankPayAllowed" : {
+          "type" : "boolean",
+          "description" : "Paiments bancaires autorisés"
+        },
+        "bqeIbanStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Statut de l'IBAN (-1 : Non utilisable, 0 : Facultatif, 1 : Obligatoire)"
+        },
+        "bqeIbanLength" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Longueur de l'IBAN"
+        }
+      },
+      "description" : "Les paramètres modifiables qui dépendent du pays"
+    },
+    "CountryPaymentDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant unique des informations de paiements du pays",
+          "readOnly" : true
+        },
+        "isoCurrencyHome" : {
+          "type" : "string",
+          "description" : "Devise de paiement chèques/mandats",
+          "readOnly" : true
+        },
+        "isoCurrencyBank" : {
+          "type" : "string",
+          "description" : "Devise de paiement bancaires",
+          "readOnly" : true
+        },
+        "homePayAllowed" : {
+          "type" : "boolean",
+          "description" : "Paiements chèques autorisés",
+          "readOnly" : true
+        },
+        "bankPayAllowed" : {
+          "type" : "boolean",
+          "description" : "Paiments bancaires autorisés",
+          "readOnly" : true
+        },
+        "bqeIbanStatus" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Statut de l'IBAN (-1 : Non utilisable, 0 : Facultatif, 1 : Obligatoire)",
+          "readOnly" : true
+        },
+        "bqeIbanLength" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Longeur de l'IBAN",
+          "readOnly" : true
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique",
+          "readOnly" : true
+        }
+      },
+      "description" : "Les informations de paiements pour un pays"
+    },
+    "CountryTerritoryDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "countryTerritoryId" : {
+          "type" : "string",
+          "description" : "Identifiant unique du pays"
+        },
+        "entryValid" : {
+          "type" : "boolean",
+          "description" : "Le pays est-il valide ?"
+        },
+        "zipcodeMandatory" : {
+          "type" : "boolean",
+          "description" : "Le zipcode du pays est-il obligatoire ?"
+        },
+        "zipcodeForceable" : {
+          "type" : "boolean",
+          "description" : "Peut-on forcer la sauvegarde si le zipcode du pays est obligatoire et qu'il n'est pas renseigné ?"
+        },
+        "iso2Code" : {
+          "type" : "string",
+          "description" : "Code ISO2 du pays"
+        },
+        "iso3Code" : {
+          "type" : "string",
+          "description" : "Code ISO3 du pays"
+        },
+        "cdcCode" : {
+          "type" : "string",
+          "description" : "Code CDC du pays"
+        },
+        "ofsCode" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Code OFS du pays"
+        },
+        "ofasCode" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Code OFAS du pays"
+        },
+        "shortNameFr" : {
+          "type" : "string",
+          "description" : "Nom du pays FR"
+        },
+        "shortNameDe" : {
+          "type" : "string",
+          "description" : "Nom du pays DE"
+        },
+        "shortNameIt" : {
+          "type" : "string",
+          "description" : "Nom du pays IT"
+        },
+        "countryPayment" : {
+          "description" : "Les informations de paiements du pays",
+          "$ref" : "#/definitions/CountryPaymentDto"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      },
+      "description" : "Un pays"
+    },
+    "CountryTypeDto" : {
+      "type" : "object",
+      "properties" : {
+        "countryId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "countryIdISO2" : {
+          "type" : "string"
+        },
+        "countryNameShort" : {
+          "type" : "string"
+        }
+      }
+    },
+    "EnvironmentDto" : {
+      "type" : "object",
+      "properties" : {
+        "serverVersion" : {
+          "type" : "string",
+          "description" : "Version du serveur"
+        },
+        "scheme" : {
+          "type" : "string",
+          "description" : "Protocole du serveur"
+        },
+        "serverPort" : {
+          "type" : "string",
+          "description" : "Port du serveur"
+        },
+        "serverName" : {
+          "type" : "string",
+          "description" : "Nom du serveur"
+        },
+        "buildTimestamp" : {
+          "type" : "string",
+          "description" : "Timestamp du build"
+        },
+        "contextPath" : {
+          "type" : "string",
+          "description" : "Chemin d'accès du contexte"
+        },
+        "environmentName" : {
+          "type" : "string",
+          "description" : "Nom de l'environnement"
+        },
+        "production" : {
+          "type" : "boolean",
+          "description" : "En production"
+        }
+      },
+      "description" : "Un environnement DTO"
+    },
+    "FormattedFybadResultDto" : {
+      "type" : "object",
+      "properties" : {
+        "typeAdr" : {
+          "type" : "string",
+          "description" : "FYBAD: Type d'adresse"
+        },
+        "idAdr" : {
+          "type" : "string",
+          "description" : "FYBAD: ID de l'adresse"
+        },
+        "nomId" : {
+          "type" : "string",
+          "description" : "FYBAD: nom de l'ID"
+        },
+        "codeInstitution" : {
+          "type" : "string",
+          "description" : "FYBAD: code institution"
+        },
+        "adrdNom" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile nom"
+        },
+        "designSuppl" : {
+          "type" : "string",
+          "description" : "FYBAD:designation supplémentaire"
+        },
+        "adrdRue" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile rue"
+        },
+        "adrdProvince" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile province"
+        },
+        "adrdLocalite" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile localité"
+        },
+        "adrdNoPostal" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile numéro postal"
+        },
+        "adrdCodePaysTerritA" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile code pays territoire A"
+        },
+        "telephone" : {
+          "type" : "string",
+          "description" : "FYBAD: téléphone"
+        },
+        "telefax" : {
+          "type" : "string",
+          "description" : "FYBAD: téléfax"
+        },
+        "adrdEmail" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse domicile e-mail"
+        },
+        "siteWeb" : {
+          "type" : "string",
+          "description" : "FYBAD: url site web"
+        },
+        "commentaire" : {
+          "type" : "string",
+          "description" : "FYBAD: commentaire"
+        },
+        "adrpNomRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse paiement nom refad"
+        },
+        "adrpDesignSuppRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse paiement designation supplémentaire refad"
+        },
+        "adrpRueRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse paiement rue refad"
+        },
+        "adrpVilleRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse paiement ville refad"
+        },
+        "adrpCodePostalRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse paiement code postal refad"
+        },
+        "adrpPaysTerritRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: adresse paiement pays territoire refad"
+        },
+        "noCompteBanqueRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: numéro compte bancaire refad"
+        },
+        "noClearingRefad" : {
+          "type" : "string",
+          "description" : "FYBAD: numéro clearing refad"
+        },
+        "isn" : {
+          "type" : "string",
+          "description" : "FYBAD: isn"
+        },
+        "dateMutatA" : {
+          "type" : "string",
+          "description" : "FYBAD: date de mutation A"
+        },
+        "visa" : {
+          "type" : "string",
+          "description" : "FYBAD: visa"
+        },
+        "violations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RuleViolation"
+          }
+        }
+      }
+    },
+    "FormattedPostalAddressResultDto" : {
+      "type" : "object",
+      "properties" : {
+        "addressLines" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "addressLinesFormatted" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "violations" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/RuleViolation"
+          }
+        }
+      }
+    },
+    "IbanToolResponseDto" : {
+      "type" : "object",
+      "properties" : {
+        "getBankInfoResponse" : {
+          "$ref" : "#/definitions/BankInfoDto"
+        },
+        "fault" : {
+          "$ref" : "#/definitions/ValidationErrorDto"
+        }
+      },
+      "description" : "Reponse du webservice postfinance ibanTool"
+    },
+    "OrgaFybadSyncDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "id" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "cdIsn" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "origine" : {
+          "type" : "string"
+        }
+      },
+      "description" : "Synchronisation FYBAD"
+    },
+    "PaymentAddressDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'adresse"
+        },
+        "accountName" : {
+          "type" : "string",
+          "description" : "Intitulé du accountNumber (60)"
+        },
+        "accountNameAddOn1" : {
+          "type" : "string",
+          "description" : "Intitulé du accountNumber - addon (60)"
+        },
+        "bankName" : {
+          "type" : "string",
+          "description" : "Nom de la banque (60)"
+        },
+        "bankNameAddOn" : {
+          "type" : "string",
+          "description" : "Complément du serviceName de banque (60)"
+        },
+        "iban" : {
+          "type" : "string",
+          "description" : "IBAN (34)"
+        },
+        "accountNumber" : {
+          "type" : "string",
+          "description" : "Numéro de accountNumber (34)"
+        },
+        "bic" : {
+          "type" : "string",
+          "description" : "Code BIC"
+        },
+        "clearing" : {
+          "type" : "string",
+          "description" : "Code clearing"
+        },
+        "country" : {
+          "description" : "Pays",
+          "$ref" : "#/definitions/CountryTerritoryDto"
+        },
+        "streetAndNo" : {
+          "type" : "string",
+          "description" : "Rue et numéro de rue de la banque"
+        },
+        "streetAndNoAddOn" : {
+          "type" : "string",
+          "description" : "Rue et numéro de rue de la banque addOn"
+        },
+        "zipCode" : {
+          "type" : "string",
+          "description" : "Code postal de la banque"
+        },
+        "town" : {
+          "type" : "string",
+          "description" : "Ville de la banque"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      },
+      "description" : "Coordonnées de paiement"
+    },
+    "PaymentAddressHistoDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "idPayAddressHis" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'adresse historique"
+        },
+        "validFrom" : {
+          "type" : "string",
+          "description" : "Date à partir de laquelle l'entrée est valide"
+        },
+        "validTo" : {
+          "type" : "string",
+          "description" : "Date jusqu'à laquelle l'entrée est valide"
+        },
+        "idOrga" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'organisation liée"
+        },
+        "idOrgaService" : {
+          "type" : "string",
+          "description" : "Identifiant unique du service lié"
+        },
+        "tsLogicalDeletion" : {
+          "type" : "string",
+          "description" : "Date de suppression logique"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'adresse"
+        },
+        "accountName" : {
+          "type" : "string",
+          "description" : "Intitulé du accountNumber (60)"
+        },
+        "accountNameAddOn1" : {
+          "type" : "string",
+          "description" : "Intitulé du accountNumber - addon (60)"
+        },
+        "bankName" : {
+          "type" : "string",
+          "description" : "Nom de la banque (60)"
+        },
+        "bankNameAddOn" : {
+          "type" : "string",
+          "description" : "Complément du serviceName de banque (60)"
+        },
+        "iban" : {
+          "type" : "string",
+          "description" : "IBAN (34)"
+        },
+        "accountNumber" : {
+          "type" : "string",
+          "description" : "Numéro de accountNumber (34)"
+        },
+        "bic" : {
+          "type" : "string",
+          "description" : "Code BIC"
+        },
+        "clearing" : {
+          "type" : "string",
+          "description" : "Code clearing"
+        },
+        "country" : {
+          "description" : "Pays",
+          "$ref" : "#/definitions/CountryTerritoryDto"
+        },
+        "streetAndNo" : {
+          "type" : "string",
+          "description" : "Rue et numéro de rue de la banque"
+        },
+        "zipCode" : {
+          "type" : "string",
+          "description" : "Code postal de la banque"
+        },
+        "town" : {
+          "type" : "string",
+          "description" : "Ville de la banque"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      }
+    },
+    "PmDto" : {
+      "type" : "object",
+      "required" : [ "types" ],
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'organisation"
+        },
+        "activeCode" : {
+          "type" : "boolean",
+          "description" : "Caisses seulement (type PM C) - false quand la caisse est dissoute"
+        },
+        "adrId" : {
+          "type" : "string",
+          "description" : "? (7 max)"
+        },
+        "ijInstitutionCode" : {
+          "type" : "string",
+          "description" : "Code utilisé par les OAI (30 max)"
+        },
+        "organisationNameId" : {
+          "type" : "string",
+          "description" : "nom court FYBAD. Non saisi (30 max)"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "description" : "Numéro de téléphone (à revoir)"
+        },
+        "faxNumber" : {
+          "type" : "string",
+          "description" : "Numéro de fax (à revoir)"
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "description" : "Adresse e-mail"
+        },
+        "internetAddress" : {
+          "type" : "string",
+          "description" : "Page WEB"
+        },
+        "sedexId" : {
+          "type" : "string",
+          "description" : "Sedex ID"
+        },
+        "comment" : {
+          "type" : "string",
+          "description" : "Commentaire (100)"
+        },
+        "organisationName" : {
+          "type" : "string",
+          "description" : "Nom de l'organisation saisi dans le GUI (60)"
+        },
+        "organisationNameAddOn1" : {
+          "type" : "string",
+          "description" : "Ligne 2, complète le nom de l'organisation (60)"
+        },
+        "mrMrs" : {
+          "type" : "string",
+          "description" : "Monsieur Madame"
+        },
+        "title" : {
+          "type" : "string",
+          "description" : "Titre de civilité"
+        },
+        "firstName" : {
+          "type" : "string",
+          "description" : "Prénom (30)"
+        },
+        "lastName" : {
+          "type" : "string",
+          "description" : "Nom (30)"
+        },
+        "numero" : {
+          "type" : "string",
+          "description" : "identifiant métier généré sauf pour les caisses"
+        },
+        "types" : {
+          "type" : "array",
+          "description" : "Types de PM",
+          "items" : {
+            "$ref" : "#/definitions/PmTypeDto"
+          }
+        },
+        "postalAddress" : {
+          "description" : "Adresse postale",
+          "$ref" : "#/definitions/PostalAddressDto"
+        },
+        "paymentAddress" : {
+          "description" : "Coordonnées de paiement",
+          "$ref" : "#/definitions/PaymentAddressDto"
+        },
+        "orgaFybadSync" : {
+          "description" : "Etat de la Synchronisation FYBAD",
+          "$ref" : "#/definitions/OrgaFybadSyncDto"
+        },
+        "pmServList" : {
+          "type" : "array",
+          "description" : "Liste services",
+          "items" : {
+            "$ref" : "#/definitions/PmServiceDto"
+          }
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        },
+        "fkReplacedBy" : {
+          "type" : "string",
+          "description" : "ID de la caisse repreneuse dans le cas d'une caisse dissoute"
+        }
+      },
+      "description" : "Personne"
+    },
+    "PmDtoForExternalUse" : {
+      "type" : "object",
+      "properties" : {
+        "adrId" : {
+          "type" : "string"
+        },
+        "ijInstitutionCode" : {
+          "type" : "string"
+        },
+        "organisationNameId" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "string"
+        },
+        "faxNumber" : {
+          "type" : "string"
+        },
+        "emailAddress" : {
+          "type" : "string"
+        },
+        "internetAddress" : {
+          "type" : "string"
+        },
+        "sedexId" : {
+          "type" : "string"
+        },
+        "comment" : {
+          "type" : "string"
+        },
+        "organisationName" : {
+          "type" : "string"
+        },
+        "organisationNameAddOn1" : {
+          "type" : "string"
+        },
+        "numero" : {
+          "type" : "string"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "postalAddress" : {
+          "$ref" : "#/definitions/AddressInformationTypeDto"
+        },
+        "pmServList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/PmServiceDtoForExternalUse"
+          }
+        }
+      }
+    },
+    "PmOrgaHistoDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "idOrgaHis" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'organisation historique"
+        },
+        "validFrom" : {
+          "type" : "string",
+          "description" : "Date à partir de laquelle l'entrée est valide"
+        },
+        "validTo" : {
+          "type" : "string",
+          "description" : "Date jusqu'à laquelle l'entrée est valide"
+        },
+        "idOrga" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'organisation"
+        },
+        "tsLogicalDeletion" : {
+          "type" : "string",
+          "description" : "Date de suppression logique"
+        },
+        "activeCode" : {
+          "type" : "boolean",
+          "description" : "Caisses seulement (type PM C) - false quand la caisse est dissoute"
+        },
+        "adrId" : {
+          "type" : "string",
+          "description" : "? (7 max)"
+        },
+        "ijInstitutionCode" : {
+          "type" : "string",
+          "description" : "Code utilisé par les OAI (30 max)"
+        },
+        "organisationNameId" : {
+          "type" : "string",
+          "description" : "nom court FYBAD. Non saisi (30 max)"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "description" : "Numéro de téléphone (à revoir)"
+        },
+        "faxNumber" : {
+          "type" : "string",
+          "description" : "Numéro de fax (à revoir)"
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "description" : "Adresse e-mail"
+        },
+        "internetAddress" : {
+          "type" : "string",
+          "description" : "Page WEB"
+        },
+        "sedexId" : {
+          "type" : "string",
+          "description" : "Sedex ID"
+        },
+        "comment" : {
+          "type" : "string",
+          "description" : "Commentaire (100)"
+        },
+        "organisationName" : {
+          "type" : "string",
+          "description" : "Nom de l'organisation saisi dans le GUI (60)"
+        },
+        "organisationNameAddOn1" : {
+          "type" : "string",
+          "description" : "Ligne 2, complète le nom de l'organisation (60)"
+        }
+      }
+    },
+    "PmSearchResultDto" : {
+      "type" : "object",
+      "properties" : {
+        "resultList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/PmDto"
+          }
+        },
+        "resultNumber" : {
+          "type" : "string"
+        },
+        "complete" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "PmServiceDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "serviceId" : {
+          "type" : "string",
+          "description" : "Identifiant du service"
+        },
+        "serviceName" : {
+          "type" : "string",
+          "description" : "Nom du service"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "description" : "Numéro de téléphone"
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "description" : "Adresse e-mail"
+        },
+        "postalAddress" : {
+          "description" : "Adresse postale",
+          "$ref" : "#/definitions/PostalAddressDto"
+        },
+        "paymentAddress" : {
+          "description" : "Adresse de paiement",
+          "$ref" : "#/definitions/PaymentAddressDto"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      },
+      "description" : "Un service"
+    },
+    "PmServiceDtoForExternalUse" : {
+      "type" : "object",
+      "properties" : {
+        "serviceName" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "string"
+        },
+        "emailAddress" : {
+          "type" : "string"
+        },
+        "postalAddress" : {
+          "$ref" : "#/definitions/AddressInformationTypeDto"
+        }
+      }
+    },
+    "PmServiceHistoDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "idServiceHis" : {
+          "type" : "string",
+          "description" : "Identifiant unique du service"
+        },
+        "validFrom" : {
+          "type" : "string",
+          "description" : "Date à partir de laquelle l'entrée est valide"
+        },
+        "validTo" : {
+          "type" : "string",
+          "description" : "Date jusqu'à laquelle l'entrée est valide"
+        },
+        "tsLogicalDeletion" : {
+          "type" : "string",
+          "description" : "Date de suppression logique"
+        },
+        "idOrga" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'organisation liée"
+        },
+        "idOrgaService" : {
+          "type" : "string",
+          "description" : "Identifiant unique du service lié"
+        },
+        "serviceId" : {
+          "type" : "string",
+          "description" : "Identifiant du service"
+        },
+        "serviceName" : {
+          "type" : "string",
+          "description" : "Nom du service"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "description" : "Numéro de téléphone"
+        },
+        "emailAddress" : {
+          "type" : "string",
+          "description" : "Adresse e-mail"
+        },
+        "postalAddress" : {
+          "description" : "Adresse postale",
+          "$ref" : "#/definitions/PostalAddressDto"
+        },
+        "paymentAddress" : {
+          "description" : "Adresse de paiement",
+          "$ref" : "#/definitions/PaymentAddressDto"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      }
+    },
+    "PmTypeDto" : {
+      "type" : "object",
+      "properties" : {
+        "organisationTypeId" : {
+          "type" : "string",
+          "description" : "Identifiant technique du type"
+        },
+        "type" : {
+          "type" : "string",
+          "description" : "Code type d'une personne morale"
+        },
+        "comment" : {
+          "type" : "string",
+          "description" : "libellé du type de personne morale"
+        }
+      }
+    },
+    "PostalAddressDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'adresse"
+        },
+        "addressLine1" : {
+          "type" : "string",
+          "description" : "Adresse ligne 1"
+        },
+        "addressLine2" : {
+          "type" : "string",
+          "description" : "Adresse ligne 2"
+        },
+        "street" : {
+          "type" : "string",
+          "description" : "Rue"
+        },
+        "houseNumber" : {
+          "type" : "string",
+          "description" : "Numéro dans la rue (30)"
+        },
+        "dwellingNumber" : {
+          "type" : "string",
+          "description" : "Numéro de l'appartement (30)"
+        },
+        "postOfficeBoxNumber" : {
+          "type" : "string",
+          "description" : "Numéro de case postale"
+        },
+        "postOfficeBoxText" : {
+          "type" : "string",
+          "description" : "Texte de la case postale"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "Localité, lieu-dit (40)"
+        },
+        "town" : {
+          "type" : "string",
+          "description" : "Ville (40)"
+        },
+        "swissZipCode" : {
+          "type" : "string",
+          "description" : "NPA"
+        },
+        "swissZipCodeAddOn" : {
+          "type" : "string",
+          "description" : "NPA complément (2 max)"
+        },
+        "swissZipCodeId" : {
+          "type" : "string",
+          "description" : "???"
+        },
+        "foreignZipCode" : {
+          "type" : "string",
+          "description" : "Zip code étranger (15)"
+        },
+        "country" : {
+          "description" : "Pays",
+          "$ref" : "#/definitions/CountryTerritoryDto"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      },
+      "description" : "Adresse postale"
+    },
+    "PostalAddressHistoDto" : {
+      "type" : "object",
+      "properties" : {
+        "createdDate" : {
+          "type" : "string",
+          "description" : "Date de création"
+        },
+        "createdBy" : {
+          "type" : "string",
+          "description" : "Qui a créé"
+        },
+        "lastModifiedDate" : {
+          "type" : "string",
+          "description" : "Date de modification"
+        },
+        "lastModifiedBy" : {
+          "type" : "string",
+          "description" : "Qui a modifié"
+        },
+        "idPostAddressHis" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'adresse postale"
+        },
+        "validFrom" : {
+          "type" : "string",
+          "description" : "Date à partir de laquelle l'entrée est valide"
+        },
+        "validTo" : {
+          "type" : "string",
+          "description" : "Date jusqu'à laquelle l'entrée est valide"
+        },
+        "idOrga" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'organisation liée"
+        },
+        "idOrgaService" : {
+          "type" : "string",
+          "description" : "Identifiant unique du service lié"
+        },
+        "tsLogicalDeletion" : {
+          "type" : "string",
+          "description" : "Date de suppression logique"
+        },
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant unique de l'adresse"
+        },
+        "addressLine1" : {
+          "type" : "string",
+          "description" : "Adresse ligne 1"
+        },
+        "addressLine2" : {
+          "type" : "string",
+          "description" : "Adresse ligne 2"
+        },
+        "street" : {
+          "type" : "string",
+          "description" : "Rue"
+        },
+        "houseNumber" : {
+          "type" : "string",
+          "description" : "Numéro dans la rue (30)"
+        },
+        "dwellingNumber" : {
+          "type" : "string",
+          "description" : "Numéro de l'appartement (30)"
+        },
+        "postOfficeBoxNumber" : {
+          "type" : "string",
+          "description" : "Numéro de case postale"
+        },
+        "postOfficeBoxText" : {
+          "type" : "string",
+          "description" : "Texte de la case postale"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "Localité, lieu-dit (40)"
+        },
+        "town" : {
+          "type" : "string",
+          "description" : "Ville (40)"
+        },
+        "swissZipCode" : {
+          "type" : "string",
+          "description" : "NPA"
+        },
+        "swissZipCodeAddOn" : {
+          "type" : "string",
+          "description" : "NPA complément (2 max)"
+        },
+        "swissZipCodeId" : {
+          "type" : "string",
+          "description" : "???"
+        },
+        "foreignZipCode" : {
+          "type" : "string",
+          "description" : "Zip code étranger (15)"
+        },
+        "country" : {
+          "description" : "Pays",
+          "$ref" : "#/definitions/CountryTerritoryDto"
+        },
+        "deleted" : {
+          "type" : "boolean",
+          "description" : "Effacement logique"
+        }
+      }
+    },
+    "RuleViolation" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "string",
+          "enum" : [ "DATA_LOST", "EMPTY_OR_NULL_FIELD", "INCOMPATIBLE_FIELDS", "INCORRECT_FORMAT_FIELD", "LINE_TOO_LONG", "MANDATORY_FIELD", "NON_SYNCHRONIZED_CONTACT_TYPE", "PUNCTUATION_NOT_ACCEPTED", "REFORMATED_FIELD", "STRING_TOO_LONG", "INVALID_NB_LINES", "VERIFY_ADDR_LINES_1_AND_2", "VERIFY_ADDR_STREET_PO_LINES1_2", "NOT_ADMITTED_VALUE" ]
+        },
+        "ruleIssueLevel" : {
+          "type" : "string",
+          "enum" : [ "INFO", "WARNING", "ERROR" ]
+        }
+      }
+    },
+    "UserDto" : {
+      "type" : "object",
+      "properties" : {
+        "username" : {
+          "type" : "string",
+          "description" : "Nom d'utilisateur"
+        },
+        "nameId" : {
+          "type" : "string",
+          "description" : "name identifier SAML"
+        },
+        "userAdminId" : {
+          "type" : "string",
+          "description" : "Identifiant de l'utilisateur à l'administration"
+        },
+        "surname" : {
+          "type" : "string",
+          "description" : "Nom de l'utilisateur"
+        },
+        "firstname" : {
+          "type" : "string",
+          "description" : "Prénom de l'utilisateur"
+        },
+        "email" : {
+          "type" : "string",
+          "description" : "Adresse email"
+        },
+        "trigramme" : {
+          "type" : "string",
+          "description" : "Trigramme"
+        },
+        "lang" : {
+          "type" : "string",
+          "description" : "Langue par défaut"
+        },
+        "downgradedMode" : {
+          "type" : "boolean",
+          "description" : "Mode dégradé en cas de problème LDAP empêchant la synchronisation avec GEDO / FYBAD"
+        },
+        "roles" : {
+          "type" : "array",
+          "description" : "Rôles de l'utilisateur",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "permissions" : {
+          "type" : "array",
+          "description" : "Droits de l'utilisateur",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "description" : "Informations sur l'utilisateur connecté"
+    },
+    "ValidationErrorDto" : {
+      "type" : "object",
+      "properties" : {
+        "faultCode" : {
+          "type" : "string"
+        },
+        "faultException" : {
+          "type" : "string"
+        },
+        "faultMessage" : {
+          "type" : "string"
+        }
+      },
+      "description" : "Reponse du webservice postfinance ibanTool lors d'une erreur de validation"
+    },
+    "ZipCodeDto" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Identifiant"
+        },
+        "iso2Code" : {
+          "type" : "string",
+          "description" : "Code ISO2 du pays"
+        },
+        "countryName" : {
+          "type" : "string",
+          "description" : "Nom du pays FR"
+        },
+        "languageCode" : {
+          "type" : "string",
+          "description" : "langage"
+        },
+        "town" : {
+          "type" : "string",
+          "description" : "Ville"
+        },
+        "zipCode" : {
+          "type" : "string",
+          "description" : "NPA"
+        },
+        "locality" : {
+          "type" : "string",
+          "description" : "Localité"
+        }
+      },
+      "description" : "Un NPA"
+    },
+    "ZipCodeSearchResultDto" : {
+      "type" : "object",
+      "properties" : {
+        "resultList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/ZipCodeDto"
+          }
+        },
+        "resultNumber" : {
+          "type" : "string"
+        },
+        "complete" : {
+          "type" : "boolean"
+        }
+      }
+    }
+  }
+}
